@@ -1,6 +1,6 @@
 // importing url module
 const url = require('url');
-let addr = 'http://localhost:8080/default.html?year=2017&month=february';
+let addr = request.url;
 let q = url.parse(addr, true);
 
 console.log(q.host); // returns 'localhost:8080'
