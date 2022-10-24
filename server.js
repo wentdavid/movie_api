@@ -18,15 +18,7 @@ let q = new URL(addr, true);
 
 
   //logging timestamps
-  const http = require('http'),
-  fs = require('fs'),
-  url = require('url');
-
-http.createServer((request, response) => {
-  let addr = request.url,
-    q = url.parse(addr, true),
-    filePath = '';
-
+  
   fs.appendFile('log.txt', 'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n', (err) => {
     if (err) {
       console.log(err);
@@ -44,7 +36,11 @@ http.createServer((request, response) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
       throw err;
-    }
+    } else {
+        response.writeHead(200, {'Content-Type': 'text/html'});
+        response.write(data);
+        response.end();
+      }
 
     response.writeHead(200, { 'Content-Type': 'text/html' });
     response.write(data);
