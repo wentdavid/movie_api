@@ -1,25 +1,49 @@
 // importing url module
-const url = require('documentation'); // Checks for the documentation html
+const url = require('url'); // Checks for the documentation html
 let addr = request.url;
 let q = new URL(addr, true);
 
 console.log(q.host); // returns 'localhost:8080'
-console.log(q.pathname); // returns '/default.html'
-console.log(q.search); // returns '?year=2017&month=february'
+console.log(q.pathname); // returns '/#.html'
+console.log(q.search); // returns 'what that comes after the html file name
 
-let qdata = q.query; // returns an object: { year: 2017, month: 'february' }
-console.log(qdata.month); // returns 'february'
+// fs module
+const fs = require("fs");
 
+fs.readFile('input.txt', (err, data) => {
+  if (err) {
+    throw err;
+  }
+  console.log('File content: ' + data.toString());
+});
 
 //importing html module
 const http = require('http');
 
 http.createServer((request, response) => {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end('Hello Node!\n');
-}).listen(8080);
+    let addr = request.url,
+    q = url.parse(addr, true),
+    filePath = '';
 
-console.log('My first Node test server is running on Port 8080.');
+    if (q.pathname.includes('documentation')) {
+        filePath = (__dirname + '/documentation.html');
+      } else {
+        filePath = 'index.html';
+      }
+    
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          throw err;
+        }
+    
+        response.writeHead(200, { 'Content-Type': 'text/html' });
+        response.write(data);
+        response.end();
+    
+      });
+    
+    }).listen(8080);
+    console.log('My test server is running on Port 8080.');
 
 
 // log url timestamps
