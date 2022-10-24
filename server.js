@@ -1,4 +1,11 @@
+//url module
+const url = require('url');
+let addr = request.url;
+let q = new URL(addr, true);
 
+console.log(q.host); // returns 'localhost:8080'
+console.log(q.pathname); // returns '/#.html'
+console.log(q.search); // returns everything after the .html
  
  //http module
  http.createServer((request, response) => {
