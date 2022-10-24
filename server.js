@@ -3,22 +3,14 @@ const http = require('http'),
   url= require('url'),
   fs= require('fs');
 
-//url module
-const url = require('url');
-let addr = request.url;
-let q = new URL(addr, true);
-
-
- 
- //http module
+ //http and url module
  http.createServer((request, response) => {
     let addr=request.url;
-    let p=url.parse(addr, true);
+    let q = new URL(addr, true);
     let filePath="";
 
 
   //logging timestamps
-  
   fs.appendFile('log.txt', 'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n', (err) => {
     if (err) {
       console.log(err);
