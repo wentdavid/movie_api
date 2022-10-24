@@ -1,5 +1,5 @@
 // importing url module
-const url = require('documentation');
+const url = require('documentation'); // Checks for the documentation html
 let addr = request.url;
 let q = new URL(addr, true);
 
