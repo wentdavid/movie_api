@@ -1,7 +1,7 @@
 // importing url module
 const url = require('url');
 let addr = request.url;
-let q = url.parse(addr, true);
+let q = new URL(addr, true);
 
 console.log(q.host); // returns 'localhost:8080'
 console.log(q.pathname); // returns '/default.html'
