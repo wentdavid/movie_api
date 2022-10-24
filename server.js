@@ -25,6 +25,7 @@ const http = require('http'),
     filePath = 'index.html';
   }
 
+  //fs module
   fs.readFile(filePath, (err, data) => {
     if (err) {
       throw err;
