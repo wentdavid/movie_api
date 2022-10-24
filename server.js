@@ -34,10 +34,6 @@ const http = require('http'),
         response.end();
       }
 
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.write(data);
-    response.end();
-
   });
 
   
