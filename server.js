@@ -1,11 +1,14 @@
+//declaration
+const http = require('http'),
+  url= require('url'),
+  fs= require('fs');
+  
 //url module
 const url = require('url');
 let addr = request.url;
 let q = new URL(addr, true);
 
-console.log(q.host); // returns 'localhost:8080'
-console.log(q.pathname); // returns '/#.html'
-console.log(q.search); // returns everything after the .html
+
  
  //http module
  const http = require('http');
