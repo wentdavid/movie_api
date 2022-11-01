@@ -106,3 +106,4 @@ Timestamp: Mon Oct 24 2022 13:15:17 GMT+0200 (Mitteleuropäische Sommerzeit)
 ::1 - - [01/Nov/2022:16:23:44 +0000] "DELETE /users/1 HTTP/1.1" 200 48 "-" "PostmanRuntime/7.29.2"
 ::1 - - [01/Nov/2022:16:24:08 +0000] "DELETE /users/2 HTTP/1.1" 200 59 "-" "PostmanRuntime/7.29.2"
 ::1 - - [01/Nov/2022:16:24:50 +0000] "DELETE /users/2 HTTP/1.1" 200 23 "-" "PostmanRuntime/7.29.2"
+::1 - - [01/Nov/2022:16:47:39 +0000] "GET /movies/Harry%20Potter HTTP/1.1" 200 466 "-" "PostmanRuntime/7.29.2"
