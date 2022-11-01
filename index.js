@@ -1,3 +1,5 @@
+const { title } = require('process');
+
 //decalring const
 const express = require('express'),
   morgan = require('morgan'),
@@ -5,6 +7,7 @@ const express = require('express'),
   path = require('path'),
   app = express(),
   bodyParser = require('body-parser'),
+  uuid = require('uuid'),
   methodOverride = require('method-override'),
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
@@ -13,49 +16,98 @@ const express = require('express'),
   app.use(methodOverride());
 
 
-let moviesTopten = [
-        {
-            title: 'Harry Potter and the Sorcerer\'s Stone',
-            author: 'J.K. Rowling'
-        },
-        {
-            title: 'Lord of the Rings',
-            author: 'J.R.R. Tolkien'
-        },
-        {
-            title: 'Twilight',
-            author: 'Stephanie Meyer'
-        },
-        {
-            title: 'Harry Potter and the Sorcerer\'s Stone',
-            author: 'J.K. Rowling'
-        },
-        {
-            title: 'Lord of the Rings',
-            author: 'J.R.R. Tolkien'
-        },
-        {
-            title: 'Twilight',
-            author: 'Stephanie Meyer'
-        },
-        {
-            title: 'Twilight',
-            author: 'Stephanie Meyer'
-        },
-        {
-            title: 'Harry Potter and the Sorcerer\'s Stone',
-            author: 'J.K. Rowling'
-        },
-        {
-            title: 'Lord of the Rings',
-            author: 'J.R.R. Tolkien'
-        },
-        {
-            title: 'Twilight',
-            author: 'Stephanie Meyer'
-        }
+// let moviesTopten = [
+//         {
+//             title: 'Harry Potter and the Sorcerer\'s Stone',
+//             author: 'J.K. Rowling'
+//         },
+//         {
+//             title: 'Lord of the Rings',
+//             author: 'J.R.R. Tolkien'
+//         },
+//         {
+//             title: 'Twilight',
+//             author: 'Stephanie Meyer'
+//         },
+//         {
+//             title: 'Harry Potter and the Sorcerer\'s Stone',
+//             author: 'J.K. Rowling'
+//         },
+//         {
+//             title: 'Lord of the Rings',
+//             author: 'J.R.R. Tolkien'
+//         },
+//         {
+//             title: 'Twilight',
+//             author: 'Stephanie Meyer'
+//         },
+//         {
+//             title: 'Twilight',
+//             author: 'Stephanie Meyer'
+//         },
+//         {
+//             title: 'Harry Potter and the Sorcerer\'s Stone',
+//             author: 'J.K. Rowling'
+//         },
+//         {
+//             title: 'Lord of the Rings',
+//             author: 'J.R.R. Tolkien'
+//         },
+//         {
+//             title: 'Twilight',
+//             author: 'Stephanie Meyer'
+//         }
 
-  ];
+//   ];
+
+  let users = [
+    {
+        id: 1,
+        name: 'David',
+        favoriteMovies:['Harry Potter'],
+        
+    },
+    {
+        id: 2,
+        name: 'testuser',
+        favoriteMovies:[]
+        
+    },
+];
+
+let movies = [
+    {
+        'Title': 'Harry Potter',
+        'Description': 'This is the description of the Harry Potter movie',
+        'Genre': {
+          'Name':'Fantasy',
+          'Description':'Example Description for Fantasy genre',
+        },
+        'Director': {
+            'Name': 'JK Rowling',
+            'Bio': 'Example Bio of this director',
+            'Birth': 1960,
+        },
+        'ImageUrl': 'https://imgs.search.brave.com/qaTuE6ntHZFJ2DoF6goAewvM7aUG3LdJNJY7CryMAXQ/rs:fit:800:1200:1/g:ce/aHR0cHM6Ly93d3cu/dGVzdGVkaWNoLmRl/L3F1aXo1OC9waWN0/dXJlL3BpY18xNTQ1/MDY3OTgwXzUuanBn',
+        'Featured': false,
+    },
+    {
+      'Title': 'Harry Potter 2',
+      'Description': 'This is the description of the Harry Potter movie',
+      'Genre': {
+        'Name':'Sci-Fi',
+        'Description':'Example Description for Fantasy genre',
+      },
+      'Director': {
+          'Name': 'JK Rowling',
+          'Bio': 'Example Bio of this director',
+          'Birth': 1960,
+      },
+      'ImageUrl': 'https://imgs.search.brave.com/qaTuE6ntHZFJ2DoF6goAewvM7aUG3LdJNJY7CryMAXQ/rs:fit:800:1200:1/g:ce/aHR0cHM6Ly93d3cu/dGVzdGVkaWNoLmRl/L3F1aXo1OC9waWN0/dXJlL3BpY18xNTQ1/MDY3OTgwXzUuanBn',
+      'Featured': false,
+  },
+];
+
 
   // setup the logger
   app.use(morgan('combined', {stream: accessLogStream}));
@@ -72,7 +124,7 @@ let moviesTopten = [
   });
   
   app.get('/movies', (req, res) => {
-    res.json(moviesTopten);
+    res.json(movies);
   });
 
   //Error
@@ -81,6 +133,127 @@ let moviesTopten = [
     res.status(500).send('Something broke!');
   });
   
+//CREATE (Allow new users to register)
+app.post('/users', (req,res) => {
+  const newUser = req.body;
+
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser)
+  }else{
+    res.status(400).send('users need names')
+  }
+})
+
+//UPDATE (Allow users to update their user info (username))
+app.put('/users/:id', (req,res) => {
+  const {id} = req.params;
+  const updatedUser = req.body;
+
+  let user = users.find( user => user.id == id);
+
+  if (user) {
+    user.name = updatedUser.name;
+    res.status(200).json(user);
+  }else{
+    res.status(400).send('no such user')
+  }
+
+})
+
+//CREATE (Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
+app.post('/users/:id/:movieTitle', (req,res) => {
+  const { id, movieTitle } = req.params;
+  
+
+  let user = users.find( user => user.id == id);
+
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);;
+  }else{
+    res.status(400).send('no such user')
+  }
+
+})
+
+
+//DELETE (Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later))
+app.delete('/users/:id/:movieTitle', (req,res) => {
+  const { id, movieTitle } = req.params;
+  
+
+  let user = users.find( user => user.id == id);
+
+  if (user) {
+    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
+    res.status(200).send(`${movieTitle} has been removed from user ${id}'s array`);;
+  }else{
+    res.status(400).send('no such user')
+  }
+
+})
+
+//DELETE (Allow existing users to deregister (showing only a text that a user email has been removed))
+app.delete('/users/:id', (req,res) => {
+  const { id } = req.params;
+  
+
+  let user = users.find( user => user.id == id);
+
+  if (user) {
+    users = users.filter( user => user.id != id);
+    res.status(200).send(`user ${id} has been deleted`);;
+  }else{
+    res.status(400).send('no such user')
+  }
+
+})
+
+//READ (return a list of ALL movies to the user)
+app.get('/movies',(req,res) => {
+  res.status(200).json(movies);
+})
+
+//READ (Return data (description, genre, director, image URL) about a single movie by title to the user)
+app.get('/movies/:title',(req,res) => {
+  const {title} = req.params;
+  const movie = movies.find(movie => movie.Title === title);
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('no such movie')
+  }
+})
+
+
+//READ (Return data about a genre (description) by title)
+app.get('/movies/genre/:genreName',(req,res) => {
+  const {genreName} = req.params;
+  const genre = movies.find(movie => movie.Genre.Name === genreName).Genre;
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send('no such genre')
+  }
+})
+
+//READ (Return data about a director (bio, birth year) by name)
+app.get('/movies/directors/:directorName',(req,res) => {
+  const {directorName} = req.params;
+  const director = movies.find(movie => movie.Director.Name === directorName).Director;
+
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(400).send('no such director')
+  }
+})
+
+
   // listen for requests
   app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
