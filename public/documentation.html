@@ -14,163 +14,27 @@
 
 
 <h2>Objective</h2>
-This server-side component of a web application provides users with access to information about different
+<p>This server-side component of a web application provides users with access to information about different
 movies, directors, and genres. Users are able to sign up, update their
-personal information, and create a list of their favorite movies.
+personal information, and create a list of their favorite movies.</p>
 
-let users = [
-    {
-        id: 1,
-        username: 'wentdavid',
-        email: 'davidwent@me.com'
-        favorite movie: ,
-        }
-    },
-    {
-        id: 2,
-        username: 'testuser',
-        email: 'testuser@me.com'
-        favoritemovie: ,
-        }
-    },
-];
+<div>
+    <h2>Features</h2>
+    <ul>
+        <li>Return a list of all movies to the user</li>
+        <li>Return data (description, genre, director, image URL) about a single movie by title to the user</li>
+        <li>Return data about a genre (description) by title</li>
+        <li>Return data about a director (bio, birth year) by name</li>
+        <li>Allow new users to register</li>
+        <li>Allow users to update their user info</li>
+        <li>Allow users to add a movie to their list of favorites</li>
+        <li>Allow users to remove a movie from their list of favorites</li>
+        <li>Allow existing users to deregister.</li>
+    </ul>
 
-let movies = [
-    {
-        id: 1,
-        title: 'Harry Potter',
-        director: {
-            name: 'JK Rowling',
-            birth year: 1960,
-            death year: 2022,
-            bio: 'this is the test bio of the director'
-
-        }
-        genre: 'Fantasy',
-        description: 'This is the description of the Harry Potter movie',
-        image: https://imgs.search.brave.com/qaTuE6ntHZFJ2DoF6goAewvM7aUG3LdJNJY7CryMAXQ/rs:fit:800:1200:1/g:ce/aHR0cHM6Ly93d3cu/dGVzdGVkaWNoLmRl/L3F1aXo1OC9waWN0/dXJlL3BpY18xNTQ1/MDY3OTgwXzUuanBn,
-        }
-    },
-    {
-        id: 1,
-        title: 'Harry Potter 2',
-        director: 'JK Rowling',
-        genre: 'Fantasy',
-        description: 'This is the description of the Harry Potter movie',
-        image: https://imgs.search.brave.com/VpsXs65xmpmkmj7zvDjs3BiGRfjL_z3Mp0_j4OoL5rc/rs:fit:1000:1200:1/g:ce/aHR0cDovL2ltYWdl/czYuZmFucG9wLmNv/bS9pbWFnZS9waG90/b3MvMzQ2MDAwMDAv/SFAtUG9zdGVyLWhh/cnJ5LXBvdHRlci1j/bHViLTIzMi0zNDY5/NTk5MC0xMDAwLTE1/MDAuanBn,
-        }
-    },
-];
+    </div>
 
 
-
-
-
-
-
-// Gets a list of all movies
-app.get('/movies', (req,res) => {
-    res.json(movies);
-});
-
-//Gets the data about a single movie, by name  (description, genre, director, image URL, whether it’s featured or not)
-app.get('/movies/:title', (req,res) => {
-    res.json(movies.find((movie) =>
-    {return movie.title === req.params.title}));
-});
-
-//Gets the data about the genre of a movie by title
-app.get('/movie/:title/genre', (req, res) => {
-    let movie = movies.find((movie) => { return movie.title === req.params.title});
-
-    if (movie) {
-        let genre = Object.values(movie.genre); // Object.values() filters out object's keys and keeps the values that are returned as a new array
-        
-    });
-    console.log(genre);
-    
-} else { 
-    res.status(404).send('Movie with the name '+ req.params.title + ' was not found.');
-}
-});
-
-
-//Gets data about the director (bio, birth year, death year) by name
-app.get('/movies/:title/director', (req, res) => {
-    let movie = movies.find((movie) => { return movie.title === req.params.title});
-
-    if (movie) {
-        let directorName = Object.values(movie.director); // Object.values() filters out object's keys and keeps the values that are returned as a new array
-    });
-
-    console.log(directorName);
-    res.status(201).send(''+ directorName);
-} else { 
-    res.status(404).send('Movie with the name '+ req.params.title + ' was not found.');
-}
-});
-
-
-//Allow new users to register
-app.post('/users', (req,res) => {
-    let newUser = req.body;
-    
-    if (!newUser.username) {
-        const message = 'Missing name in request body';
-        res.status(400).send (message);
-    } else {
-        newUser.id = uuid.v4();
-        users.push(newUser);
-        res.status(201).send(newUser);
-    }
-});
-
-
-//Allow users to update their user info (username)
-app.put('/users/:username', (req,res) => {
-    let user = users.find((user) => {return user.username === req.params.username});
-
-    if (user) {
-        user.username[req.params.username] =parseInt (req.params.username);
-        res.status(201).send('User ' + req.params.username + ' changed their username);
-    } else {
-        res.status(404).send('User with the name ' + req.params.username + ' was not found.');
-    }
-});
-
-
-//Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
-app.put('/users/favoritemovie', (req,res) => {
-    let user = users.find((user) => {return user.username === req.params.username});
-
-    if (user) {
-        user.favoritemovie[req.params.favoritemovie] =parseInt (req.params.favoritemovie);
-        res.status(201).send('Movie was added to Favorit');
-    } else {
-        res.status(404).send('Movie could not be added as a favorite');
-    }
-});
-
-//Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
-app.delete('/users/:favoritemovie', (req,res) => {
-    let user = users.find((username) => { return user.favoritemovie === req.params.favoritemovie});
-
-    if (user){
-        users = users.filter((Obj) => {return Obj.favoritemovie !== req.params.favoritemovie});
-        res.status(201).send('Favorite movie was deleted.');
-    }
-});
-
-
-//Allow existing users to deregister (showing only a text that a user email has been removed)
-app.delete('/users/:id', (req,res) => {
-    let user = users.find((user) => { return user.email === req.params.email});
-
-    if (user){
-        users = users.filter((Obj) => {return Obj.email !== req.params.email});
-        res.status(201).send('User' + req.params.email + 'was deleted.');
-    }
-});
 
 
 </body>
