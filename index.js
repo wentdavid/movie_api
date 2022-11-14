@@ -15,6 +15,15 @@ const express = require('express'),
   app.use(bodyParser.json());
   app.use(methodOverride());
 
+  //Integrating Mongoose 
+  const mongoose = require('mongoose');
+  const Models = require('./models.js');
+
+  const Movies = Modules.Movie;
+  const Users = Models.User;
+
+  mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the database
+
 
 // let moviesTopten = [
 //         {
