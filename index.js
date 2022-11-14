@@ -294,7 +294,7 @@ app.delete('/users/:id/:movieTitle', (req,res) => {
 
 })
 
-//DELETE (Allow existing users to deregister (showing only a text that a user email has been removed))
+/*//DELETE (Allow existing users to deregister (showing only a text that a user email has been removed))
 app.delete('/users/:id', (req,res) => {
   const { id } = req.params;
   
@@ -309,6 +309,23 @@ app.delete('/users/:id', (req,res) => {
   }
 
 })
+*/
+
+// Delete a user by username
+app.delete('/users/:Username', (req, res) => {
+  Users.findOneAndRemove ({ Username: req.params.Username })
+  .then ((user) => {
+    if (!user) {
+      res.status(400).send(req.params.Username + 'was no found');
+    } else {
+      res.status(200).send(req.params.Username + 'was deleted.');
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send ('Error:' + err);
+  });
+});
 
 //READ (return a list of ALL movies to the user)
 app.get('/movies',(req,res) => {
