@@ -243,7 +243,7 @@ app.put('/users/:Username' , (req, res) => {
 });
 
 
-//CREATE (Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
+/*//CREATE (Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
 app.post('/users/:id/:movieTitle', (req,res) => {
   const { id, movieTitle } = req.params;
   
@@ -258,6 +258,24 @@ app.post('/users/:id/:movieTitle', (req,res) => {
   }
 
 })
+*/
+
+// Add a movie to a user's list  of favorites
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }
+    { $push: { FavoriteMovies: req.params.MovieID}
+  },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: + err');
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
+
 
 
 //DELETE (Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later))
