@@ -142,8 +142,9 @@ let movies = [
     res.status(500).send('Something broke!');
   });
   
+
 //CREATE (Allow new users to register)
-app.post('/users', (req,res) => {
+/*app.post('/users', (req,res) => {
   const newUser = req.body;
 
   if (newUser.name) {
@@ -153,7 +154,45 @@ app.post('/users', (req,res) => {
   }else{
     res.status(400).send('users need names')
   }
-})
+})*/
+
+// Add a user 
+/* We'll expect JSON in this format
+{
+  ID: Integer,
+  Username: String,
+  Password: String,
+  Email: String,
+  Birthday: Date
+}*/
+
+app.post('/users', (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
+
+
 
 //UPDATE (Allow users to update their user info (username))
 app.put('/users/:id', (req,res) => {
@@ -170,6 +209,8 @@ app.put('/users/:id', (req,res) => {
   }
 
 })
+
+
 
 //CREATE (Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
 app.post('/users/:id/:movieTitle', (req,res) => {
