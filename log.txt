@@ -118,3 +118,4 @@ Timestamp: Mon Oct 24 2022 13:15:17 GMT+0200 (Mitteleuropäische Sommerzeit)
 ::1 - - [16/Nov/2022:11:52:03 +0000] "POST /users HTTP/1.1" 500 136 "-" "PostmanRuntime/7.29.2"
 ::1 - - [16/Nov/2022:11:52:23 +0000] "POST /users HTTP/1.1" 500 136 "-" "PostmanRuntime/7.29.2"
 ::1 - - [16/Nov/2022:11:54:05 +0000] "POST /users HTTP/1.1" 500 136 "-" "PostmanRuntime/7.29.2"
+::1 - - [16/Nov/2022:12:05:38 +0000] "POST /users HTTP/1.1" 500 136 "-" "PostmanRuntime/7.29.2"

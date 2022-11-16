@@ -1,5 +1,3 @@
-const { title } = require('process');
-
 //decalring const
 const express = require('express'),
   morgan = require('morgan'),
