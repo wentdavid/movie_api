@@ -1,12 +1,12 @@
 //decalring const
 const express = require('express'),
-  morgan = require('morgan'),
-  fs = require('fs'), // import built in node modules fs and path 
-  path = require('path'),
-  app = express(),
-  bodyParser = require('body-parser'),
-  uuid = require('uuid'),
-  methodOverride = require('method-override'),
+      morgan = require('morgan'),
+      fs = require('fs'), // import built in node modules fs and path 
+      path = require('path'),
+      app = express(),
+      bodyParser = require('body-parser'),
+      uuid = require('uuid'),
+      methodOverride = require('method-override'),
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
   accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
@@ -14,60 +14,62 @@ const express = require('express'),
   app.use(methodOverride());
 
   //Integrating Mongoose 
-  const mongoose = require('mongoose');
-  const Models = require('./models.js');
+  const mongoose = require('mongoose'),
+        Models = require('./models.js');
 
-  const Movies = Models.Movie;
-  const Users = Models.User;
+  const Movies = Models.Movie,
+        Users = Models.User,
+        Genres = Models.Genre,
+        Directors = Models.Director;
 
   mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the database
 
 
-// let moviesTopten = [
-//         {
-//             title: 'Harry Potter and the Sorcerer\'s Stone',
-//             author: 'J.K. Rowling'
-//         },
-//         {
-//             title: 'Lord of the Rings',
-//             author: 'J.R.R. Tolkien'
-//         },
-//         {
-//             title: 'Twilight',
-//             author: 'Stephanie Meyer'
-//         },
-//         {
-//             title: 'Harry Potter and the Sorcerer\'s Stone',
-//             author: 'J.K. Rowling'
-//         },
-//         {
-//             title: 'Lord of the Rings',
-//             author: 'J.R.R. Tolkien'
-//         },
-//         {
-//             title: 'Twilight',
-//             author: 'Stephanie Meyer'
-//         },
-//         {
-//             title: 'Twilight',
-//             author: 'Stephanie Meyer'
-//         },
-//         {
-//             title: 'Harry Potter and the Sorcerer\'s Stone',
-//             author: 'J.K. Rowling'
-//         },
-//         {
-//             title: 'Lord of the Rings',
-//             author: 'J.R.R. Tolkien'
-//         },
-//         {
-//             title: 'Twilight',
-//             author: 'Stephanie Meyer'
-//         }
+/* let moviesTopten = [
+        {
+            title: 'Harry Potter and the Sorcerer\'s Stone',
+            author: 'J.K. Rowling'
+        },
+        {
+            title: 'Lord of the Rings',
+            author: 'J.R.R. Tolkien'
+        },
+        {
+            title: 'Twilight',
+            author: 'Stephanie Meyer'
+        },
+        {
+            title: 'Harry Potter and the Sorcerer\'s Stone',
+            author: 'J.K. Rowling'
+        },
+        {
+            title: 'Lord of the Rings',
+            author: 'J.R.R. Tolkien'
+        },
+        {
+            title: 'Twilight',
+            author: 'Stephanie Meyer'
+        },
+        {
+            title: 'Twilight',
+            author: 'Stephanie Meyer'
+        },
+        {
+            title: 'Harry Potter and the Sorcerer\'s Stone',
+            author: 'J.K. Rowling'
+        },
+        {
+            title: 'Lord of the Rings',
+            author: 'J.R.R. Tolkien'
+        },
+        {
+            title: 'Twilight',
+            author: 'Stephanie Meyer'
+        }
 
-//   ];
+  ]; */
 
-  let users = [
+ /*  let users = [
     {
         id: 1,
         name: 'David',
@@ -80,9 +82,9 @@ const express = require('express'),
         favoriteMovies:[]
         
     },
-];
+]; */
 
-let movies = [
+/* let movies = [
     {
         'Title': 'Harry Potter',
         'Description': 'This is the description of the Harry Potter movie',
@@ -113,7 +115,7 @@ let movies = [
       'ImageUrl': 'https://imgs.search.brave.com/qaTuE6ntHZFJ2DoF6goAewvM7aUG3LdJNJY7CryMAXQ/rs:fit:800:1200:1/g:ce/aHR0cHM6Ly93d3cu/dGVzdGVkaWNoLmRl/L3F1aXo1OC9waWN0/dXJlL3BpY18xNTQ1/MDY3OTgwXzUuanBn',
       'Featured': false,
   },
-];
+]; */
 
 
   // setup the logger
