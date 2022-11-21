@@ -7,11 +7,20 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       uuid = require('uuid'),
       methodOverride = require('method-override'),
+
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
   accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
   app.use(bodyParser.json());
   app.use(methodOverride());
+
+//BodyParser middleware function
+app.use(bodyParser.urlencoded({ extended: true}));
+
+//App argument ensures that Express is available in your “auth.js” file as well.
+let auth = require("./auth")(app);
+
+
 
   //Integrating Mongoose 
   const mongoose = require('mongoose'),
