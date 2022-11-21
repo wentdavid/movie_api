@@ -137,7 +137,6 @@ const express = require('express'),
     res.json(movies);
   }); */
 
-  // Get all movies and return a json object
   app.get('/movies', (req, res) => {
     Movies.find()
     .then(function (movies) {
@@ -294,7 +293,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 
 
 //DELETE (Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later))
-app.delete('/users/:id/:movieTitle', (req,res) => {
+/* app.delete('/users/:id/:movieTitle', (req,res) => {
   const { id, movieTitle } = req.params;
   
 
@@ -307,7 +306,22 @@ app.delete('/users/:id/:movieTitle', (req,res) => {
     res.status(400).send('no such user')
   }
 
-})
+}) */
+
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username },
+    { $pull: { FavoriteMovies: req.params.MovieID}
+  },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: + err');
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
 
 /*//DELETE (Allow existing users to deregister (showing only a text that a user email has been removed))
 app.delete('/users/:id', (req,res) => {
@@ -331,9 +345,9 @@ app.delete('/users/:Username', (req, res) => {
   Users.findOneAndRemove ({ Username: req.params.Username })
   .then ((user) => {
     if (!user) {
-      res.status(400).send(req.params.Username + 'was no found');
+      res.status(400).send(req.params.Username + ' was no found');
     } else {
-      res.status(200).send(req.params.Username + 'was deleted.');
+      res.status(200).send(req.params.Username + ' was deleted.');
     }
   })
   .catch((err) => {
@@ -381,7 +395,7 @@ app.get('/movies/:title', (req, res) => {
 }) */
 
 app.get('/movies/genres/:Name', (req, res) => {
-  Movies.findOne({ "Genre.Name": req.params.name})
+  Movies.findOne({ "Genre.Name": req.params.Name})
   .then((movies) => {
     res.send(movies.Genre);
   })
