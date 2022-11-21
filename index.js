@@ -131,9 +131,22 @@ const express = require('express'),
   app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
-  
-  app.get('/movies', (req, res) => {
+
+  // Get all movies
+ /*  app.get('/movies', (req, res) => {
     res.json(movies);
+  }); */
+
+  // Get all movies and return a json object
+  app.get('/movies', (req, res) => {
+    Movies.find()
+    .then(function (movies) {
+      res.status(201).json(movies);
+    })
+    .catch(function (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
   });
 
   //Error
@@ -193,6 +206,7 @@ app.post('/users', (req, res) => {
 });
 
 
+
 /*
 //UPDATE (Allow users to update their user info (username))
 app.put('/users/:id', (req,res) => {
@@ -222,6 +236,7 @@ app.put('/users/:id', (req,res) => {
   (required)
   Birthday: Date
 }*/
+
 app.put('/users/:Username' , (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {$set:
   {
