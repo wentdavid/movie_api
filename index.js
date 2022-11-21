@@ -403,6 +403,17 @@ app.get('/movies/genres/:Name', (req, res) => {
   }
 }) */
 
+app.get('/movies/directors/:Name', (req, res) => {
+  Movies.findOne({ "Director.Name": req.params.Name})
+  .then((movies) => {
+    res.send(movies.Director);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send("No such director. Error: " + err);
+  });
+});
+
 
 
 

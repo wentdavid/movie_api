@@ -153,3 +153,6 @@ Timestamp: Mon Oct 24 2022 13:15:17 GMT+0200 (Mitteleuropäische Sommerzeit)
 ::ffff:127.0.0.1 - - [21/Nov/2022:11:25:58 +0000] "GET /genres/Fantasy HTTP/1.1" 404 153 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [21/Nov/2022:11:27:21 +0000] "GET /genre/Fantasy HTTP/1.1" 404 152 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [21/Nov/2022:11:27:49 +0000] "GET /movies HTTP/1.1" 200 936 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:31:45 +0000] "GET /movies/genres/fantasy HTTP/1.1" 404 160 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:31:50 +0000] "GET /movies/genres/fantasy HTTP/1.1" 404 160 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:32:17 +0000] "GET /movies/directors/JK%20Rowling HTTP/1.1" 200 71 "-" "Thunder Client (https://www.thunderclient.com)"
