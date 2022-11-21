@@ -137,3 +137,7 @@ Timestamp: Mon Oct 24 2022 13:15:17 GMT+0200 (Mitteleuropäische Sommerzeit)
 ::ffff:127.0.0.1 - - [21/Nov/2022:10:48:41 +0000] "POST /movies/ HTTP/1.1" 404 147 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [21/Nov/2022:10:50:58 +0000] "GET /movies/ HTTP/1.1" 200 936 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [21/Nov/2022:10:54:53 +0000] "GET /movies/ HTTP/1.1" 200 936 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:10:57:36 +0000] "GET /movies/ HTTP/1.1" 200 936 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:03:06 +0000] "GET /movies/Harry%20Potter HTTP/1.1" 200 466 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:05:04 +0000] "GET /movies/ HTTP/1.1" 200 936 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [21/Nov/2022:11:10:08 +0000] "GET /movies/Harry%20Potter HTTP/1.1" 200 466 "-" "Thunder Client (https://www.thunderclient.com)"

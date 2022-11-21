@@ -342,13 +342,9 @@ app.delete('/users/:Username', (req, res) => {
   });
 });
 
-//READ (return a list of ALL movies to the user)
-app.get('/movies',(req,res) => {
-  res.status(200).json(movies);
-})
 
 //READ (Return data (description, genre, director, image URL) about a single movie by title to the user)
-app.get('/movies/:title',(req,res) => {
+/* app.get('/movies/:title',(req,res) => {
   const {title} = req.params;
   const movie = movies.find(movie => movie.Title === title);
 
@@ -357,7 +353,19 @@ app.get('/movies/:title',(req,res) => {
   } else {
     res.status(400).send('no such movie')
   }
-})
+}) */
+
+app.get('/movies/:title', (req, res) => {
+  Movies.find({Title: req.params.title})
+  .then((movie) => {
+    res.status(200).json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send("Error: " + err);
+  });
+});
+
 
 
 //READ (Return data about a genre (description) by title)
