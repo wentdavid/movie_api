@@ -369,7 +369,7 @@ app.get('/movies/:title', (req, res) => {
 
 
 //READ (Return data about a genre (description) by title)
-app.get('/movies/genre/:genreName',(req,res) => {
+/* app.get('/movies/genre/:genreName',(req,res) => {
   const {genreName} = req.params;
   const genre = movies.find(movie => movie.Genre.Name === genreName).Genre;
 
@@ -378,10 +378,21 @@ app.get('/movies/genre/:genreName',(req,res) => {
   } else {
     res.status(400).send('no such genre')
   }
-})
+}) */
+
+app.get('/movies/genres/:Name', (req, res) => {
+  Movies.findOne({ "Genre.Name": req.params.name})
+  .then((movies) => {
+    res.send(movies.Genre);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send("No such genre. Error: " + err);
+  });
+});
 
 //READ (Return data about a director (bio, birth year) by name)
-app.get('/movies/directors/:directorName',(req,res) => {
+/* app.get('/movies/directors/:directorName',(req,res) => {
   const {directorName} = req.params;
   const director = movies.find(movie => movie.Director.Name === directorName).Director;
 
@@ -390,7 +401,9 @@ app.get('/movies/directors/:directorName',(req,res) => {
   } else {
     res.status(400).send('no such director')
   }
-})
+}) */
+
+
 
 
   // listen for requests
