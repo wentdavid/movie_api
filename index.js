@@ -17,9 +17,9 @@ const express = require('express'),
 //BodyParser middleware function
 app.use(bodyParser.urlencoded({ extended: true}));
 
-//Integrating CORS and allow requests from ALL Origins
+/* //Integrating CORS and allow requests from ALL Origins 
 const cors = require("cors");
-app.use(cors());
+app.use(cors()); */
 
 //Integrating CORS and allow requets from only CERTAIN origins
 let allowedOrigins = ["http://localhost:8080", "htttp://testsite.com"];
@@ -34,6 +34,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+
 
 //App argument ensures that Express is available in your “auth.js” file as well.
 let auth = require("./auth")(app);
