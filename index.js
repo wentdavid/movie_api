@@ -43,6 +43,9 @@ let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 
+//Express-Validator
+const { check, validateResult } = require("express-validator");
+
 
   //Integrating Mongoose 
   const mongoose = require('mongoose'),
@@ -209,7 +212,21 @@ require("./passport");
   Birthday: Date
 }*/
 
-app.post('/users', (req, res) => {
+app.post('/users',
+//Validation logic here for request
+[
+  check("Username", "Username is required").isLength({min:5}),
+  check("Username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
+  check("Password", "Password is required").not().isEmpty(),
+  check("Email", "Email does not appear to be valid").isEmail()
+], (req, res) => {
+  //check the validation object for errors
+  let errors = validateResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
