@@ -22,7 +22,7 @@ let auth = require("./auth")(app);
 
 //Requiring the Passport module and importing the "passport.js" 
 const passport = require("passport");
-require(./passport);
+require("./passport");
 
 
   //Integrating Mongoose 
