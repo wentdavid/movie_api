@@ -37,11 +37,11 @@ app.use(cors({
 
 
 //App argument ensures that Express is available in your “auth.js” file as well.
-let auth = require("./auth")(app);
+let auth = require('./auth')(app);
 
 //Requireing the Passport module and importing the “passport.js”
-const passport = require("passport");
-require("./passport");
+const passport = require('passport');
+require('./passport');
 
 //Express-Validator
 const { check, validateResult } = require("express-validator");
@@ -171,15 +171,15 @@ const { check, validateResult } = require("express-validator");
     res.json(movies);
   }); */
 
-  app.get('/movies', passport.authenticate("jwt", {session: false}), (req, res) => {
+  app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
-    .then(function (movies) {
-      res.status(201).json(movies);
-    })
-    .catch(function (error) {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
   });
 
   //Error
@@ -252,7 +252,6 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
     });
 });
-
 
 
 /*
