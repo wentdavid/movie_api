@@ -56,7 +56,9 @@ const { check, validateResult } = require("express-validator");
         Genres = Models.Genre,
         Directors = Models.Director;
 
-  mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the database
+ /*  mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database */
+
+  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the database
 
 
 /* let moviesTopten = [
