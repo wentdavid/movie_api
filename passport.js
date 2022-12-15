@@ -40,7 +40,7 @@ passport.use(new LocalStrategy({
 //jwt is extracted from the header of the http request. jwt is called bearer token
 passport.use(new JWTStrategy ({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secret0rKey: "your_jwt_secret"
+    secretOrKey: "your_jwt_secret"
 }, (jwtPayload, callback) => {
     return Users.findById(jwtPayload._id)
     .then((user)=> {

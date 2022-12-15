@@ -7,22 +7,20 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       uuid = require('uuid'),
       methodOverride = require('method-override'),
+      cors = require("cors");
 
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
   accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+  app.use(morgan('combined', { stream: accessLogStream }));
   app.use(bodyParser.json());
   app.use(methodOverride());
 
 //BodyParser middleware function
 app.use(bodyParser.urlencoded({ extended: true}));
 
-/* //Integrating CORS and allow requests from ALL Origins 
-const cors = require("cors");
-app.use(cors()); */
-
 //Integrating CORS and allow requets from only CERTAIN origins
-let allowedOrigins = ["http://localhost:8080", "htttp://testsite.com"];
+let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -41,7 +39,9 @@ let auth = require('./auth')(app);
 
 //Requireing the Passport module and importing the “passport.js”
 const passport = require('passport');
+app.use(passport.initialize());
 require('./passport');
+
 
 //Express-Validator
 const { check, validateResult } = require("express-validator");
@@ -56,9 +56,11 @@ const { check, validateResult } = require("express-validator");
         Genres = Models.Genre,
         Directors = Models.Director;
 
- /*  mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database */
+/* mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database 
+ */
 
-  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the database
+process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true, }); // allows Mongoose to connect to the database
 
 
 /* let moviesTopten = [
