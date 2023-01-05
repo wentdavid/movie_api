@@ -11,13 +11,12 @@ const express = require('express'),
 
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
-  accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
   app.use(morgan('combined', { stream: accessLogStream }));
   app.use(bodyParser.json());
   app.use(methodOverride());
 
 //BodyParser middleware function
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 //Integrating CORS and allow requets from only CERTAIN origins
@@ -36,7 +35,7 @@ app.use(cors({
 
 
 //App argument ensures that Express is available in your “auth.js” file as well.
-let auth = require('./auth')(app);
+const auth = require('./auth')(app);
 
 //Requireing the Passport module and importing the “passport.js”
 const passport = require('passport');
@@ -279,16 +278,17 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   Birthday: Date
 }*/
 
+// POST /users endpoint
 app.post('/users',
 //Validation logic here for request
 [
-  check("Username", "Username is required").isLength({min:5}),
-  check("Username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
-  check("Password", "Password is required").not().isEmpty(),
-  check("Email", "Email does not appear to be valid").isEmail()
+  check("username", "Username is required").isLength({min:5}),
+  check("username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
+  check("password", "Password is required").not().isEmpty(),
+  check("email", "Email does not appear to be valid").isEmail()
 ], (req, res) => {
   //check the validation object for errors
-  let errors = validateResult(req);
+  let errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
@@ -300,11 +300,12 @@ app.post('/users',
       if (user) { //If the user is found, send a response that it already exists
         return res.status(400).send(req.body.Username + 'already exists');
       } else {
+
         Users.create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+            username: req.body.Username,
+            password: req.body.Password,
+            email: req.body.Email,
+            birthday: req.body.Birthday
           })
           .then((user) => {res.status(201).json(user);
           })
