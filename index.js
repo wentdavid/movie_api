@@ -20,7 +20,8 @@ const express = require('express'),
 app.use(bodyParser.urlencoded({ extended: true}));
 
 //Integrating CORS and allow requets from only CERTAIN origins
-let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
+let allowedOrigins = [
+  "http://localhost:8080","https://gleansdb01.herokuapp.com/", ];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -46,29 +47,34 @@ require('./passport');
 //Express-Validator
 const { check, validateResult } = require("express-validator");
 
+const app = express();
 
   //Integrating Mongoose 
-  const mongoose = require('mongoose'),
-        Models = require('./models.js');
+const mongoose = require('mongoose'),
+      Models = require('./models.js');
 
-  const Movies = Models.Movie,
-        Users = Models.User,
-        Genres = Models.Genre,
-        Directors = Models.Director;
+const Movies = Models.Movie,
+      Users = Models.User,
+      Genres = Models.Genre,
+      Directors = Models.Director;
 
 /* mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database 
  */
 
-process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true, }); // allows Mongoose to connect to the database
+//process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';//
 
+//for online database process.env.Variable name ro secure connection URI
+mongoose.connect(process.env.CONNECTION_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(console.log("DB Connected")); // if it successfully connects
 
   // setup the logger
-  app.use(morgan('combined', {stream: accessLogStream}));
-
+  app.use(morgan('common', {stream: accessLogStream}));
   app.use(express.static('public'));
   
-  // GET requests
+  //default text response
   app.get('/', (req, res) => {
     res.send('Welcome to my Movie API!');
   });
@@ -162,37 +168,14 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   });
   
 
-//CREATE (Allow new users to register)
-/*app.post('/users', (req,res) => {
-  const newUser = req.body;
-
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser)
-  }else{
-    res.status(400).send('users need names')
-  }
-})*/
-
-// Add a user 
-/* We'll expect JSON in this format
-{
-  ID: Integer,
-  Username: String,
-  Password: String,
-  Email: String,
-  Birthday: Date
-}*/
-
-// POST /users endpoint
+// Allow new users register 
 app.post('/users',
 //Validation logic here for request
 [
-  check("username", "Username is required").isLength({min:5}),
-  check("username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
-  check("password", "Password is required").not().isEmpty(),
-  check("email", "Email does not appear to be valid").isEmail()
+  check("username", "Username is required").isLength({min:5}), //username must be at least 5 chars long
+  check("username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(), //username must be alphanumeric
+  check("password", "Password is required").not().isEmpty(),  //password must be at least 5 chars long
+  check("email", "Email does not appear to be valid").isEmail() //email must be valid
 ], (req, res) => {
   //check the validation object for errors
   let errors = validationResult(req);
@@ -228,36 +211,6 @@ app.post('/users',
     });
 });
 
-
-/*
-//UPDATE (Allow users to update their user info (username))
-app.put('/users/:id', (req,res) => {
-  const {id} = req.params;
-  const updatedUser = req.body;
-
-  let user = users.find( user => user.id == id);
-
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).json(user);
-  }else{
-    res.status(400).send('no such user')
-  }
-
-})
-*/
-
-// Update a user's info, by username
-/* We'll expect  JSON in this format
-{
-  Username: String,
-  (required)
-  Password: String,
-  (required)
-  Email: String,
-  (required)
-  Birthday: Date
-}*/
 
 // Allow users update their user info (Update)
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
@@ -295,24 +248,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
   });
 
-
-/*//CREATE (Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
-app.post('/users/:id/:movieTitle', (req,res) => {
-  const { id, movieTitle } = req.params;
-  
-
-  let user = users.find( user => user.id == id);
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);;
-  }else{
-    res.status(400).send('no such user')
-  }
-
-})
-*/
-
 // Allow users add to their list of Favorites (create)
   app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -330,24 +265,6 @@ app.post('/users/:id/:movieTitle', (req,res) => {
   } );
 
 
-
-
-//DELETE (Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later))
-/* app.delete('/users/:id/:movieTitle', (req,res) => {
-  const { id, movieTitle } = req.params;
-  
-
-  let user = users.find( user => user.id == id);
-
-  if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
-    res.status(200).send(`${movieTitle} has been removed from user ${id}'s array`);;
-  }else{
-    res.status(400).send('no such user')
-  }
-
-}) */
-
 //Delete movie from favorite list
   app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, {
@@ -364,22 +281,6 @@ app.post('/users/:id/:movieTitle', (req,res) => {
     });
   });
 
-/*//DELETE (Allow existing users to deregister (showing only a text that a user email has been removed))
-app.delete('/users/:id', (req,res) => {
-  const { id } = req.params;
-  
-
-  let user = users.find( user => user.id == id);
-
-  if (user) {
-    users = users.filter( user => user.id != id);
-    res.status(200).send(`user ${id} has been deleted`);;
-  }else{
-    res.status(400).send('no such user')
-  }
-
-})
-*/
 
 //Allow existing users deregister
   app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
