@@ -59,7 +59,7 @@ const Movies = Models.Movie,
 /* mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database 
  */
 
-//process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';//
+process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';
 
 //for online database process.env.Variable name ro secure connection URI
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true,})
