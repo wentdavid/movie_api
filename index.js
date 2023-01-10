@@ -24,7 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Integrating CORS and allow requets from only CERTAIN origins
 let allowedOrigins = [
   "http://localhost:8080",
-  "https://gleansdb01.herokuapp.com/",
+  "http://localhost:1234",
+  "http://testsite.com",
+  "https://sheltered-crag-54265.herokuapp.com/",
 ];
 
 app.use(
