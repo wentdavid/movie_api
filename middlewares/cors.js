@@ -7,6 +7,7 @@ module.exports = (app) => {
   const allowedOrigins = [
     "http://localhost:8080",
     "http://localhost:1234",
+    "http://localhost:3000",
     "http://testsite.com",
     "https://sheltered-crag-54265.herokuapp.com/",
   ];

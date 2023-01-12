@@ -32,3 +32,30 @@ passport.deserializeUser((id, done) => {
       done(null, user);
     })
 });
+
+const JWTStrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
+
+const opts = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  secretOrKey: "your_jwt_secret",
+};
+
+passport.use(
+  new JWTStrategy(opts, (jwt_payload, done) => {
+    try {
+      User.findById(jwt_payload.id)
+        .then((user) => {
+          if (user) {
+            return done(null, user);
+          }
+          return done(null, false);
+        })
+        .catch((err) => console.error(err));
+    } catch (error) {
+      return done(error);
+    }
+  })
+);
+
+module.exports = passport;
