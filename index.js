@@ -15,8 +15,8 @@ const express = require("express"),
 
 require("./config/config");
 
-const MoviesRoutes = require("./routes/movie");
-const UsersRoutes = require("./routes/user");
+const MoviesRoutes = require("./routes/movies");
+const UsersRoutes = require("./routes/users");
 const passport = require("./middlewares/passport");
 const jwt = require("./middlewares/jwt");
 

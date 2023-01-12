@@ -18,7 +18,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.find()
-      .then((movies) => res.json(movies))
+      .then((movie) => res.json(movie))
       .catch((err) => console.error(err));
   }
 );
