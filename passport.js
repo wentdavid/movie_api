@@ -1,7 +1,7 @@
 const passport = require('passport'),
 //defines basic HTTP authentication for login request
     LocalStrategy = require('passport-local').Strategy,
-    Models = require('./models/models.js'),
+    Models = require('./data/models.js'),
     passportJWT = require('passport-jwt');
 
 let Users = Models.User,

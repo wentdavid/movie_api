@@ -46,7 +46,7 @@ app.use(
 );
 
 //App argument ensures that Express is available in your “auth.js” file as well.
-const auth = require("./auth")(app);
+const auth = require("./helpers/auth")(app);
 
 //Requireing the Passport module and importing the “passport.js”
 const passport = require("passport");
@@ -58,7 +58,7 @@ const { check, validationResult } = require("express-validator");
 
 //Integrating Mongoose
 const mongoose = require("mongoose"),
-  Models = require("./models/models.js");
+  Models = require("./data/models.js");
 
 const Movies = Models.Movie,
   Users = Models.User,
