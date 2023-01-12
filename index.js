@@ -58,7 +58,7 @@ const { check, validationResult } = require("express-validator");
 
 //Integrating Mongoose
 const mongoose = require("mongoose"),
-  Models = require("./data/models.js");
+  Models = require("./models/models.js");
 
 const Movies = Models.Movie,
   Users = Models.User,
