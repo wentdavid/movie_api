@@ -1,38 +1,23 @@
-const jwtSecret = 'your_jwt_secret'; // This has to be the same key used in the JWTStrategy
+/*This file is responsible for authenticating the user by verifying the JWT token passed in the headers.
+If the token is valid, it decodes the token and adds the user data to the request object.
+If the token is invalid, it returns an error message.
+If there is no token, it passes the request to the next middleware function.*/
 
-const jwt = require('jsonwebtoken'),
-  passport = require('passport');
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
-require('../passport'); // Your local passport file
-
-
-let generateJWTToken = (user) => {
-  return jwt.sign(user, jwtSecret, {
-    subject: user.Username, // This is the username you’re encoding in the JWT
-    expiresIn: '30d', // This specifies that the token will expire in 30 days
-    algorithm: 'HS256' // This is the algorithm used to “sign” or encode the values of the JWT
-  });
-}
-
-
-/* POST login. */
-module.exports = (router) => {
-  router.post('/login', (req, res) => {
-    passport.authenticate('local', { session: false }, (error, user, info) => {
-      if (error || !user) {
-        return res.status(400).json({
-          message: 'Something is not right',
-          user: user,
-        });
-      }
-      req.login(user, { session: false }, (error) => {
-        if (error) {
-          res.send(error);
-        }
-        let token = generateJWTToken(user.toJSON());
-        return res.json({ user, token });
-      });
+module.exports = (app) => {
+  app.use((req, res, next) => {
+    const token = req.headers.authorization;
+    if (!token) {
+      return next();
     }
-    )(req, res);
+    jwt.verify(token, config.secret, (err, decoded) => {
+      if (err) {
+        return next(err);
+      }
+      req.user = decoded.user;
+      next();
+    });
   });
 };
