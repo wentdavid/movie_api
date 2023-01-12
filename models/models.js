@@ -1,7 +1,14 @@
-/*This file exports all the models from other files, so that they can be imported and used in other files.*/
-const User = require("./models/user");
-const Movie = require("./models/movie");
-const Genre = require("./models/genre");
-const Director = require("./models/director");
+/* This file exports all the models in one place so that they can be imported and used in other parts of the application.
+ */
 
-module.exports = { User, Movie, Genre, Director };
+const Movie = require("./movie");
+const User = require("./user");
+const Genre = require("./genre");
+const Director = require("./director");
+
+module.exports = {
+  Movie,
+  User,
+  Genre,
+  Director,
+};
