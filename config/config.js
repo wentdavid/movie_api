@@ -1,17 +1,12 @@
-/* This file is responsible for reading the configuration from a config.json file and storing it in a variable.
-If there is an error reading the file or parsing the JSON, it will log an error message and exit the process.//
- */
+/* This file loads the env.json file and assigns the properties inside it to the process.env object.
+This allows you to have different configurations for different environments (e.g. development, production) and easily switch between them by changing the NODE_ENV environment variable. */
 
-const fs = require("fs"); 
+const fs = require("fs");
+const path = require("path");
+const envPath = path.join(__dirname, "./env.json");
 
-let config = {};
+let env = JSON.parse(fs.readFileSync(envPath));
 
-try {
-  const configFile = fs.readFileSync("./config.json");
-  config = JSON.parse(configFile);
-} catch (error) {
-  console.log("config.json file not found or invalid JSON in config file");
-  process.exit(1);
-}
+let node_env = process.env.NODE_ENV || "development";
 
-module.exports = config;
+Object.assign(process.env, env[node_env]);
