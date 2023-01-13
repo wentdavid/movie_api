@@ -15,10 +15,10 @@ const express = require("express"),
 
 require("./config/config");
 
-const MoviesRoutes = require("./routes/movies");
-const UsersRoutes = require("./routes/users");
 const passport = require("./middlewares/passport");
 const jwt = require("./middlewares/jwt");
+const MoviesRoutes = require("./routes/movies");
+const UsersRoutes = require("./routes/users");
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
