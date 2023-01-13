@@ -10,3 +10,5 @@ let env = JSON.parse(fs.readFileSync(envPath));
 let node_env = process.env.NODE_ENV || "development";
 
 Object.assign(process.env, env[node_env]);
+console.log(process.env.MONGODB_URI);
+
