@@ -12,3 +12,11 @@ let node_env = process.env.NODE_ENV || "development";
 Object.assign(process.env, env[node_env]);
 console.log(process.env.MONGODB_URI);
 
+/* const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongoose.connection.on("error", (error) => {
+  console.error("MongoDB error", error);
+}); */

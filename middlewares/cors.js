@@ -10,6 +10,7 @@ module.exports = (app) => {
     "http://localhost:3000",
     "http://testsite.com",
     "https://sheltered-crag-54265.herokuapp.com/",
+    "https://gleans-moviedb.netlify.app"
   ];
 
   app.use(
