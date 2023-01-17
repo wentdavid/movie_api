@@ -27,6 +27,7 @@ let allowedOrigins = [
   "http://localhost:1234",
   "http://testsite.com",
   "https://sheltered-crag-54265.herokuapp.com/",
+  "https://gleans-moviedb.netlify.app",
 ];
 
 app.use(
