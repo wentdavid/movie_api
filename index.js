@@ -360,25 +360,28 @@ app.delete(
 );
 
 // Confirm Updates via password verification
-app.post("/verify-password", (req, res) => {
-  // Find the user with the specified username
-  Users.findOne({ Username: req.body.username }, (err, user) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error: " + err);
-    }
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    // Use the validatePassword method to check if the entered password is correct
-    let isValid = user.validatePassword(req.body.password);
-    if (!isValid) {
-      return res.status(401).send("Incorrect password");
-    }
-    // If the password is correct, return a success message
-    return res.status(200).send({ success: true });
-  });
-});
+app.post(
+  "/verify-password",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Users.findOne({ Username: req.body.username }, (err, user) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error: " + err);
+      }
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      // Use the validatePassword method to check if the entered password is correct
+      let isValid = user.validatePassword(req.body.password);
+      if (!isValid) {
+        return res.status(401).send("Incorrect password");
+      }
+      // If the password is correct, return a success message
+      return res.status(200).send({ success: true });
+    });
+  }
+);
 
 app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
