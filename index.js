@@ -29,6 +29,7 @@ let allowedOrigins = [
   "http://testsite.com",
   "https://sheltered-crag-54265.herokuapp.com/",
   "https://gleans-moviedb.netlify.app",
+  "https://wentdavid.github.io/myFlix-Angular-client"
 ];
 
 app.use(
