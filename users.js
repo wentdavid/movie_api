@@ -1,10 +1,11 @@
-/* const express = require('express');
+const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { check, validationResult } = require('express-validator');
 const Models = require('./models.js');
 const Users = Models.User;
 
+// GET all users
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
     .then((users) => {
@@ -16,6 +17,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     });
 });
 
+// GET user by username
 router.get('/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.username })
     .then((user) => {
@@ -31,6 +33,7 @@ router.get('/:username', passport.authenticate('jwt', { session: false }), (req,
     });
 });
 
+// POST new user
 router.post(
   '/',
   [
@@ -45,24 +48,25 @@ router.post(
       return res.status(422).json({ errors: errors.array() });
     }
     const hashedPassword = Users.hashPassword(req.body.Password);
+    const user = new Users({
+      Username: req.body.Username,
+      Password: hashedPassword,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday,
+    });
     Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) {
-          return res.status(400).send(`${req.body.Username} already exists`);
+      .then((result) => {
+        if (result) {
+          return res.status(400).send('Username already exists');
         } else {
-          Users.create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-          })
-            .then((user) => {
-              res.status(201).json(user);
-            })
-            .catch((err) => {
+          user.save((err) => {
+            if (err) {
               console.error(err);
               res.status(500).send('Error: ' + err);
-            });
+            } else {
+              res.status(201).send('User created successfully');
+            }
+          });
         }
       })
       .catch((err) => {
@@ -72,51 +76,76 @@ router.post(
   }
 );
 
+// PUT user information by username
 router.put('/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const username = req.params.username;
-  Users.findOne({ Username: username }).then((user) => {
-    if (!user) {
-      res.status(404).send('User not found');
-    } else {
-      const hashedPassword = Users.hashPassword(req.body.Password);
-      Users.findOneAndUpdate(
-        { Username: username },
-        {
-          $set: {
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-          },
-        },
-        { new: true }
-      )
-        .then((updatedUser) => {
-          res.status(200).json(updatedUser);
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err);
-        });
+  const hashedPassword = Users.hashPassword(req.body.Password);
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
     }
-  });
+  );
 });
 
+// DELETE user by username
 router.delete('/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const username = req.params.username;
-  Users.findOneAndRemove({ Username: username })
-.then((user) => {
-if (!user) {
-res.status(404).send('User not found');
+  Users.findOneAndRemove({ Username: req.params.username })
+  .then((user) => {
+    if (!user) {
+      res.status(404).send('User not found');
 } else {
-res.status(200).send(`${username} was deleted.`);
+  res.status(200).send('User deleted successfully');
 }
 })
 .catch((err) => {
-console.error(err);
-res.status(500).send('Error: ' + err);
+  console.error(err);
+  res.status(500).send('Error: ' + err);
 });
 });
 
+// POST favorite movie to user by username and movie ID
+router.post('/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $push: { FavoriteMovies: req.params.movieID } },
+    { new: true },(err, updatedUser) => {if (err) {console.error(err);
+      res.status(500).send('Error: ' + err);
+} else {
+  res.json(updatedUser);
+}
+}
+);
+});
+
+// DELETE favorite movie from user by username and movie ID
+router.delete('/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $pull: { FavoriteMovies: req.params.movieID } },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+    );
+});
+
 module.exports = router;
- */
