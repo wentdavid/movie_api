@@ -53,7 +53,6 @@ app.use(
   })
 );
 
-app.use(cors());
 
 //App argument ensures that Express is available in your “auth.js” file as well.
 const auth = require("./auth")(app);
@@ -90,7 +89,6 @@ mongoose
 
 // setup the logger
 app.use(morgan("common", { stream: accessLogStream }));
-app.use(express.static("public"));
 
 //default text response
 app.get("/", (req, res) => {
