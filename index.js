@@ -18,6 +18,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 const moviesRouter = require("./movies");
 app.use("/movies", moviesRouter);
 
@@ -36,21 +37,23 @@ let allowedOrigins = [
   "https://wentdavid.github.io"
 ];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      // If a specific origin isn’t found on the list of allowed origins
-      let message =
-        "The CORS policy for this application doesn’t allow access from origin " +
-        origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  },
-};
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          "The CORS policy for this application doesn’t allow access from origin " +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 //App argument ensures that Express is available in your “auth.js” file as well.
 const auth = require("./auth")(app);
@@ -72,6 +75,12 @@ const Movies = Models.Movie,
   Genres = Models.Genre,
   Directors = Models.Director;
 
+/* mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database
+ */
+
+// process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';
+
+//for online database process.env.Variable name ro secure connection URI
 mongoose
   .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
