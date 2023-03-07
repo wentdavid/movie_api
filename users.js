@@ -1,4 +1,4 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { check, validationResult } = require('express-validator');
@@ -119,3 +119,4 @@ res.status(500).send('Error: ' + err);
 });
 
 module.exports = router;
+ */
