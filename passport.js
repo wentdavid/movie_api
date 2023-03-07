@@ -1,52 +1,82 @@
-const passport = require('passport'),
-//defines basic HTTP authentication for login request
-    LocalStrategy = require('passport-local').Strategy,
-    Models = require('./models.js'),
-    passportJWT = require('passport-jwt');
+/**
 
-let Users = Models.User,
-    JWTStrategy = passportJWT.Strategy,
-    ExtractJWT = passportJWT.ExtractJwt;
+Passport module for authentication and authorization.
+@module passport
+@requires passport-local
+@requires ./models.js
+@requires passport-jwt
+*/
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const Models = require('./models.js');
+const passportJWT = require('passport-jwt');
 
-passport.use(new LocalStrategy({
-    //LocalStrategy takes a username and password from the request body and uses mongoose to check the database for a user with the same username but the password doesn't get checked here.
-    usernameField: 'Username',
-    passwordField: 'Password'
-}, (username, password, callback) => {
-  console.log(username + '  ' + password);
-  Users.findOne({ Username: username }, (error, user) => {
-    if (error) {
-      console.log(error);
-      return callback(error);
-    }
+let Users = Models.User;
+let JWTStrategy = passportJWT.Strategy;
+let ExtractJWT = passportJWT.ExtractJwt;
 
-        // if the username can't be found
+/**
+
+Passport strategy for local authentication.
+@function LocalStrategy
+@param {Object} options - Options for authentication.
+@param {string} options.usernameField - Field name for the username in the request body.
+@param {string} options.passwordField - Field name for the password in the request body.
+@param {callback} verify - Callback function for verifying the user.
+*/
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "Username",
+      passwordField: "Password",
+    },
+    (username, password, callback) => {
+      console.log(username + " " + password);
+      Users.findOne({ Username: username }, (error, user) => {
+        if (error) {
+          console.log(error);
+          return callback(error);
+        }
         if (!user) {
-            console.log('incorrect username');
-            return callback(null, false, {message: 'Incorrect username or password.'});
-          }
-
-         // to validate any  password a user enters
-        if (!user.validatePassword(password)) {
-            console.log('incorrect password');
-            return callback(null, false, {message: 'Incorrect password.'});
+          console.log("incorrect username");
+          return callback(null, false, {
+            message: "Incorrect username or password.",
+          });
         }
 
-        console.log('finished');
-        return callback(null, user);
-  });
-}));
+        if (!user.validatePassword(password)) {
+          console.log("incorrect password");
+          return callback(null, false, { message: "Incorrect password." });
+        }
 
-//jwt is extracted from the header of the http request. jwt is called bearer token
-passport.use(new JWTStrategy ({
-    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "your_jwt_secret"
-}, (jwtPayload, callback) => {
-    return Users.findById(jwtPayload._id)
-    .then((user)=> {
+        console.log("finished");
         return callback(null, user);
-    })
-    .catch((error) => {
-        return callback(error)
-    });
-}));
+      });
+    }
+  )
+);
+
+/**
+
+Passport strategy for JSON Web Token (JWT) authentication.
+@function JWTStrategy
+@param {Object} options - Options for authentication.
+@param {callback} verify - Callback function for verifying the user.
+*/
+passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: "your_jwt_secret",
+    },
+    (jwtPayload, callback) => {
+      return Users.findById(jwtPayload._id)
+        .then((user) => {
+          return callback(null, user);
+        })
+        .catch((error) => {
+          return callback(error);
+        });
+    }
+  )
+);
