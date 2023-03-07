@@ -16,10 +16,11 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
 });
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
-// app.use(methodOverride());
-
-//BodyParser middleware function
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+const moviesRouter = require("./movies");
+app.use("/movies", moviesRouter);
 
 //Integrating CORS and allow requets from only CERTAIN origins
 let allowedOrigins = [
@@ -90,78 +91,6 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.send("Welcome to my Movie API!");
 });
-
-app.get("/documentation", (req, res) => {
-  res.sendFile("public/documentation.html", { root: __dirname });
-});
-
-// Get all movies
-/*  app.get('/movies', (req, res) => {
-    res.json(movies);
-  }); */
-
-app.get(
-  "/movies",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.find()
-      .then((movies) => {
-        res.status(201).json(movies);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error: " + error);
-      });
-  }
-);
-
-// get movies by title
-app.get(
-  "/movies/:title",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ Title: req.params.title })
-      .then((movie) => {
-        res.status(200).json(movie);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
-
-//Get genre by Name
-app.get(
-  "/movies/genres/:Name",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Genre.Name": req.params.Name })
-      .then((movies) => {
-        res.send(movies.Genre);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
-
-//Get director data by Name
-app.get(
-  "/movies/directors/:Name",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Director.Name": req.params.Name })
-      .then((movies) => {
-        res.send(movies.Director);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
 
 // Get all user (Read in Mongoose)
 app.get(
