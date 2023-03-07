@@ -17,7 +17,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
 const moviesRouter = require("./movies");
 app.use("/movies", moviesRouter);
@@ -37,21 +36,21 @@ let allowedOrigins = [
   "https://wentdavid.github.io"
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        // If a specific origin isn’t found on the list of allowed origins
-        let message =
-          "The CORS policy for this application doesn’t allow access from origin " +
-          origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      // If a specific origin isn’t found on the list of allowed origins
+      let message =
+        "The CORS policy for this application doesn’t allow access from origin " +
+        origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  },
+};
+
+app.use(cors(corsOptions));
 
 //App argument ensures that Express is available in your “auth.js” file as well.
 const auth = require("./auth")(app);
@@ -73,12 +72,6 @@ const Movies = Models.Movie,
   Genres = Models.Genre,
   Directors = Models.Director;
 
-/* mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); // allows Mongoose to connect to the local database
- */
-
-// process.env.CONNECTION_URI = 'mongodb://localhost:27017/myFlixDB';
-
-//for online database process.env.Variable name ro secure connection URI
 mongoose
   .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
@@ -94,39 +87,6 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.send("Welcome to my Movie API!");
 });
-
-
-
-//Error
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-
-
-// Confirm Updates via password verification
-app.post(
-  "/verify-password",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Users.findOne({ Username: req.body.username }, (err, user) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Error: " + err);
-      }
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-      // Use the validatePassword method to check if the entered password is correct
-      let isValid = user.validatePassword(req.body.password);
-      if (!isValid) {
-        return res.status(401).send("Incorrect password");
-      }
-      // If the password is correct, return a success message
-      return res.status(200).send({ success: true });
-    });
-  }
-);
 
 app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
