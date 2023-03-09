@@ -532,19 +532,6 @@ app.post(
 );
 
 /**
- * This method serves the documentation HTML file.
- * @name documentation
- * @function
- * @memberof app
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
- * @returns {object} Returns the documentation HTML file.
- */
-app.get("/documentation", (req, res) => {
-  res.sendFile("public/documentation.html", { root: __dirname });
-});
-
-/**
  * This method listens for requests on the specified port.
  * @name listen
  * @function
@@ -554,6 +541,7 @@ app.get("/documentation", (req, res) => {
  * @param {function} callback - Callback function to be called once the server is listening.
  * @returns {string} Returns a console log message indicating the server is listening.
  */
+
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port " + port);

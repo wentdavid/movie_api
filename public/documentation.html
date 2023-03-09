@@ -4,24 +4,25 @@
                 <meta charset="utf-8">
                 <title>Documentation</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="documentation.css">
     </head>
            
     <body>
 
 
 
-<h1>Movie API</h1>
+<h1 class="main-heading">Movie API</h1>
 
-<div>
-    <h2>Objective</h2>
-    <p>This server-side component of a web application provides users with access to information about different
+<div class="section">
+    <h2 class="sub-heading">Objective</h2>
+    <p class="description">This server-side component of a web application provides users with access to information about different
     movies, directors, and genres. Users are able to sign up, update their
     personal information, and create a list of their favorite movies.</p>
 </div>
 
-<div>
-    <h2>Features</h2>
-    <ul>
+<div class="section">
+    <h2 class="sub-heading">Features</h2>
+    <ul class="feature-list">
         <li>Return a list of all movies to the user</li>
         <li>Return data (description, genre, director, image URL) about a single movie by title to the user</li>
         <li>Return data about a genre (description) by title</li>
@@ -34,95 +35,101 @@
     </ul>
 </div>
 
-<div>
-    <h2>API Endpoints</h2>
-            <table>
+<div class="section">
+            <h2 class="sub-heading" id="api-endpoints">API Endpoints</h2>
+            <p class="description">Once the server is running, clients can make requests to the following endpoints:</p>
+            <table class="endpoint-table">
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>HTTP Method</th>
+                        <th>Description</th>
+                        <th>Requires Authorization</th>
+                    </tr>
+                </thead>
                 <tbody>
-           
-                   <tr>
-                       <td>Get a list of all movies</td>
-                       <td>/movies</td>
-                       <td>GET</td>
-                       <td>-</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about all the movies</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Get a single movie by title</td>
-                       <td>/movies/:title</td>
-                       <td>GET</td>
-                       <td>:title</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about a single movie</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Get genre by name</td>
-                       <td>/movies/genre/:genreName</td>
-                       <td>GET</td>
-                       <td>:genreName</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about the genre of a movie</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Get director data by name</td>
-                       <td>/movies/directors/:directorName</td>
-                       <td>GET</td>
-                       <td>:directorName</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about the data of a director</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Allow new users to register</td>
-                       <td>/users</td>
-                       <td>POST</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about the users to add, structured like this:
-                        { "Username": "String","Password": "String","Email": "String","Birthday": "Date"}</td>
-                       <td>A JSON object holding data about the user that was added, structured like this { "username" : "Test1", "Password": "1234", "Email": "testtest@gmail.com", "Birthday": "1988-08-08", "favorite movie" : [] } including an ID </td>
-                   </tr>
-          
-                   <tr>
-                       <td>Allow users to update their user info</td>
-                       <td>/users/:id</td>
-                       <td>PUT</td>
-                       <td>:id</td>
-                       <td>-</td>
-                       <td>A JSON object holding data about the updated information</td>
-                   </tr>
-          
-          
-                   <tr>
-                       <td>Allow users to add a movie to their favorite list</td>
-                       <td>/users/:id/:movieTitle</td>
-                       <td>POST</td>
-                       <td>:id, :movieTitle</td>
-                       <td>-</td>
-                       <td>A JSON Object holding data about the User and the movie that was added</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Delete movie from favorite list</td>
-                       <td>/users/:id/:movieTitle</td>
-                       <td>DELETE</td>
-                       <td>:id, :movieTitle</td>
-                       <td>-</td>
-                       <td>A JSON Object holding data about the User and the movie that was removed</td>
-                   </tr>
-          
-                   <tr>
-                       <td>Allow existing users to deregister</td>
-                       <td>/users/:id</td>
-                       <td>DELETE</td>
-                       <td>:id</td>
-                       <td>-</td>
-                       <td>A text message indicating whether the User has deregistered</td>
-                   </tr>
+                    <tr>
+                        <td >/movies</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with a list of all movies.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/movies/:Title</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with details about a specific movie based on the title.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/movies/genres/:Name</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with all movies that match the given genre name.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/movies/directors/:Name</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with the director data that matches the given name.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with all users in the database.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users/:Username</td>
+                        <td class="GET">GET</td>
+                        <td>Responds with the user that matches the given username.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users</td>
+                        <td class="POST">POST</td>
+                        <td>Allows new users to register by creating a new user document in the database. A JSON object holding data about the users to add, structured like this:
+                        <code class="code">{ "Username": "String","Password": "String","Email": "String","Birthday": "Date"}</code>. A JSON object holding data about the user that was added, structured like this <code class="code">{ "username" : "Test1", "Password":
+                            "1234", "Email": "testtest@gmail.com", "Birthday": "1988-08-08", "favorite movie" : [] }</code> including an ID </td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>/users/:Username</td>
+                        <td class="PUT">PUT</td>
+                        <td>Allows users to update their user information in the database.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users/:Username/movies/:MovieID</td>
+                        <td class="POST">POST</td>
+                        <td>Allow users to add a movie to their list of favorites.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users/:Username/movies/:MovieID</td>
+                        <td class="DELETE">DELETE</td>
+                        <td>Allow users to delete a movie from their list of favorites.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/users/:Username</td>
+                        <td class="DELETE">DELETE</td>
+                        <td>This method allows existing users to be deregistered from the application.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/verify-password</td>
+                        <td class="POST">POST</td>
+                        <td>This method verifies the user's password before allowing updates to be made.</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>/documentation</td>
+                        <td class="GET">GET</td>
+                        <td>This method serves the documentation HTML file.</td>
+                        <td>No</td>
+                    </tr>
                 </tbody>
-               </table>
+            </table>
 </div>
 
 

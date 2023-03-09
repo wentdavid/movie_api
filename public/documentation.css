@@ -1,0 +1,188 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+    background-color: #222;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section {
+    margin: 30px auto;
+    background-color: #fff;
+    color: #222;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.5);
+    max-width: 700px;
+    border: 3px solid steelblue;
+    
+}
+
+.sub-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature-list li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.feature-list li:before {
+    content: "\2022";
+    font-size: 14px;
+    color: #0077cc;
+    position: absolute;
+    left: 0;
+    top: 3px;
+}
+
+.endpoint-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.endpoint-table th,
+.endpoint-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+.endpoint-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: left;
+}
+
+.endpoint-table td {
+    text-align: left;
+}
+
+.endpoint-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.endpoint-table tr:hover {
+    border: 3px solid steelblue;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.5);
+
+}
+
+.code {
+    display: inline-block;
+    padding: 0.2em 0.4em;
+    font-size: 90%;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    color: #555;
+    background-color: #f7f7f7;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+}
+
+.GET {
+    color: blue;
+}
+
+.PUT {
+    color: orange;
+}
+
+.POST {
+    color: green;
+}
+
+.DELETE {
+    color: red;
+}
+
+/* Header Styles */
+
+.main-heading {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px auto 20px;
+    color: #fff;
+}
+
+/* Link Styles */
+
+a {
+    color: #0077cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #551a8b;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 600px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .main-heading {
+        font-size: 36px;
+        margin: 30px auto 10px;
+    }
+
+    .sub-heading {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .description {
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+
+    .endpoint-table {
+        font-size: 14px;
+    }
+
+    .endpoint-table th,
+    .endpoint-table td {
+        padding: 8px;
+    }
+}
