@@ -120,8 +120,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="api-documentation">API Documentation</h2>
-
 <h2 id="authentication">Authentication</h2>
 <p>All endpoints (except for the root endpoint) require authentication using JSON Web Tokens (JWT). To access these endpoints, clients must include a valid JWT in the Authorization header of the request.</p>
 
