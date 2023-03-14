@@ -42,6 +42,7 @@ let allowedOrigins = [
   "http://testsite.com",
   "https://sheltered-crag-54265.herokuapp.com/",
   "https://gleans-moviedb.netlify.app",
+  "https://my-flix-client-ohcrcnex0-wentdavid.vercel.app/",
   "https://wentdavid.github.io/myFlix-Angular-client",
   "https://wentdavid.github.io",
 ];
